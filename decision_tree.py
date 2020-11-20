@@ -122,7 +122,6 @@ class decision_tree:
                 for x in x_value_list:
                     split(self.node_list[root].son[x], now_depth + 1, max_depth)
 
-
         self.feature_num = len(data[0][0])
         self.root = self.now
         self.now += 1
