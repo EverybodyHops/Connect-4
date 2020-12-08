@@ -1,13 +1,16 @@
+import numpy as np
+import pandas as pd
+from sklearn.metrics import f1_score
+from sklearn.model_selection import KFold
+
+import torch
+import torch.nn as nn
+import torch.utils.data as Data
+from torch.autograd import variable
+
+from lstm_model import RNN
 from read_data import connect4
 from data_label_num import data_label_num
-import torch
-from torch.autograd import variable
-from lstm_model import RNN
-import torch.nn as nn
-from sklearn.model_selection import KFold
-import pandas as pd
-import torch.utils.data as Data
-
 
 EPOCH = 1
 BATCH_SIZE = 32
@@ -37,6 +40,7 @@ if __name__ == '__main__':
 
     optimizer = torch.optim.Adam(rnn.parameters(), lr=LR)
     loss_func = nn.CrossEntropyLoss()
+    macro_f1_score = []
     kf = KFold(n_splits=5, shuffle=True, random_state=2020)
     for train_index, valid_index in kf.split(train_dataset_num):
         train_data = pd.DataFrame(train_dataset_num.copy()).drop(valid_index)
@@ -78,12 +82,19 @@ if __name__ == '__main__':
             pred_y = torch.max(valid_output, 1)[1].cuda().data.squeeze()
         else:
             pred_y = torch.max(valid_output, 1)[1].data.squeeze()
-        accuracy = (pred_y == valid_data_y).sum().item() / valid_data_y.size()[0]
-        print("验证集： %.2f" % accuracy)
+        
+        score_valid = f1_score(valid_data_y, pred_y, average="macro")
+        macro_f1_score.append(score_valid)
+        print("验证集： %.2f" % score_valid)
 
     # 模型保存
     torch.save(rnn.state_dict(), '.\model')
 
+    # 输出五折交叉验证结果
+    print("五折交叉验证结果")
+    print("f1_score均值： %.2f" % np.mean(macro_f1_score))
+    print("f1_score方差： %.2f" % np.var(macro_f1_score))
+    
     # 模型加载
     model = RNN()
     if USE_GPU:
@@ -94,7 +105,6 @@ if __name__ == '__main__':
         pred_y_test = torch.max(test_output, 1)[1].cuda().data.squeeze()
     else:
         pred_y_test = torch.max(test_output, 1)[1].data.squeeze()
-    accuracy_test = (pred_y_test == test_data_y).sum().item() / test_data_y.size()[0]
-    print("测试集： %.2f" % accuracy_test)
-
+    score_test = f1_score(test_data_y, pred_y_test, average="macro")
+    print("测试集： %.2f" % score_test)
 

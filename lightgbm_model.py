@@ -1,5 +1,5 @@
 import lightgbm as lgb
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
 
 # 参数设置
 parameters = {
@@ -54,7 +54,7 @@ def eval_model(data_test, label_test):
     label_test_pred_index = [list(x).index(max(x)) for x in label_test_pred]
 
     # 模型评估
-    score = accuracy_score(label_test, label_test_pred_index)
+    score = f1_score(label_test, label_test_pred_index, average="macro")
 
     print(score)
     print('Done!')
