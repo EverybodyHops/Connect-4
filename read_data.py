@@ -22,7 +22,7 @@ class connect4:
         return self.train_x, self.train_y
 
     def get_test(self):
-        return self.train_x, self.train_y
+        return self.test_x, self.test_y
 
 if __name__ == "__main__":
     dataset = connect4()
