@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 class connect4:
     def __init__(self, file_name="./connect-4.data", train_test_rate=0.9, numerical=False, one_hot=False):
@@ -16,7 +15,7 @@ class connect4:
         self.test_y = self.data.iloc[split_idx:, -1].values.tolist()
 
     def get_all_data(self):
-        return self.data
+        return self.data.iloc[:, :-1].values.tolist(), self.data.iloc[:, -1].values.tolist()
 
     def get_train(self):
         return self.train_x, self.train_y
