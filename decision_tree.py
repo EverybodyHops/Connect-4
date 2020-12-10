@@ -24,7 +24,7 @@ class node:
                 if t > 0:
                     p = t / s
                     self.e -= p * np.log2(p)
-        print("node", self.idx, "init, entropy is", self.e, "father is", self.father)
+        # print("node", self.idx, "init, entropy is", self.e, "father is", self.father)
 
 class decision_tree:
     def __init__(self, max_depth=5):
@@ -102,7 +102,7 @@ class decision_tree:
                     if t > m:
                         m = t
                         use_feature = i
-            print("split with feature", use_feature)
+            # print("split with feature", use_feature)
             if use_feature >= 0:
                 self.node_list[root].feature_idx = use_feature
                 x_value_list = set([i[use_feature] for i in self.node_list[root].x])
