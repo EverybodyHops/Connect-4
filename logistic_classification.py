@@ -24,7 +24,7 @@ if __name__ == '__main__':
         valid_data_x = valid_data.drop(axis=1, columns=42)
 
         # 实例化一个逻辑回归对象
-        log_reg = LogisticRegression(multi_class='ovr', solver='sag')
+        log_reg = LogisticRegression(multi_class='multinomial', solver='saga')
 
         # 传入数据训练
         log_reg.fit(train_data_x, train_data_y)
