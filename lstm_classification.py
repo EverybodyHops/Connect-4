@@ -8,12 +8,15 @@ import torch.nn as nn
 import torch.utils.data as Data
 from torch.autograd import variable
 
-from lstm_model_cust import RNN
+from lstm_model import RNN
 from read_data import connect4
 from data_label_num import data_label_num
 
+# import sys
+# sys.path.append(r'D:\Temp\Git\Connect-4')
+
 EPOCH = 10
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 TIME_STEP = 6
 INPUT_SIZE = 7
 LR = 0.01
