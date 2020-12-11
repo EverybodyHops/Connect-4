@@ -8,11 +8,11 @@ import torch.nn as nn
 import torch.utils.data as Data
 from torch.autograd import variable
 
-from lstm_model import RNN
+from lstm_model_cust import RNN
 from read_data import connect4
 from data_label_num import data_label_num
 
-EPOCH = 1
+EPOCH = 10
 BATCH_SIZE = 32
 TIME_STEP = 6
 INPUT_SIZE = 7
@@ -83,7 +83,7 @@ if __name__ == '__main__':
         else:
             pred_y = torch.max(valid_output, 1)[1].data.squeeze()
         
-        score_valid = f1_score(valid_data_y, pred_y, average="macro")
+        score_valid = f1_score(valid_data_y.cpu(), pred_y.cpu(), average="macro")
         macro_f1_score.append(score_valid)
         print("验证集： %.2f" % score_valid)
 
@@ -105,6 +105,6 @@ if __name__ == '__main__':
         pred_y_test = torch.max(test_output, 1)[1].cuda().data.squeeze()
     else:
         pred_y_test = torch.max(test_output, 1)[1].data.squeeze()
-    score_test = f1_score(test_data_y, pred_y_test, average="macro")
+    score_test = f1_score(test_data_y.cpu(), pred_y_test.cpu(), average="macro")
     print("测试集： %.2f" % score_test)
 
