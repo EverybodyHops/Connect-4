@@ -95,8 +95,8 @@ if __name__ == '__main__':
 
     # 输出五折交叉验证结果
     print("五折交叉验证结果")
-    print("f1_score均值： %.2f" % np.mean(macro_f1_score))
-    print("f1_score方差： %.2f" % np.var(macro_f1_score))
+    print("f1_score均值：", np.mean(macro_f1_score))
+    print("f1_score方差：", np.var(macro_f1_score))
     
     # 模型加载
     model = RNN()
